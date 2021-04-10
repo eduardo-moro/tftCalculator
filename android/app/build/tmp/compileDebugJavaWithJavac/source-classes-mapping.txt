@@ -1,0 +1,14 @@
+com/tftcalculator/BuildConfig.java
+ com.tftcalculator.BuildConfig
+com/tftcalculator/ReactNativeFlipper.java
+ com.tftcalculator.ReactNativeFlipper
+ com.tftcalculator.ReactNativeFlipper$1
+ com.tftcalculator.ReactNativeFlipper$2
+ com.tftcalculator.ReactNativeFlipper$2$1
+com/tftcalculator/MainActivity.java
+ com.tftcalculator.MainActivity
+com/facebook/react/PackageList.java
+ com.facebook.react.PackageList
+com/tftcalculator/MainApplication.java
+ com.tftcalculator.MainApplication
+ com.tftcalculator.MainApplication$1

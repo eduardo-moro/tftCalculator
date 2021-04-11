@@ -3,6 +3,14 @@
 ![](https://img.shields.io/badge/npm-7.8.0-informational)
 ![](https://img.shields.io/badge/react--native--cli-2.0.1-green)
 
+## Sumário:
+- [Por quê?](#user-content-por-quê)
+- [O que utilizei?](#user-content-o-que-utilizei)
+- [Rodando o projeto](#user-content-como-rodar-desenvolvimento)
+- [Prints](#user-content-prints-do-projeto)
+- [Gerando um Apk](#user-content-gerando-um-Apk)
+- [O que falta?](#user-content-o-que-falta-ser-feito)
+
 ### Por quê?
 
 Ao jogar tft, uma vantagem possível, é ter uma noção de quais os possíveis inimigos para a próxima rodada, podendo assim preparar os cards de acordo com as possibilidades.
@@ -15,21 +23,19 @@ Ao jogar tft, uma vantagem possível, é ter uma noção de quais os possíveis 
 ### Como rodar? (desenvolvimento)
 
 Primeiro de tudo, é preciso instalar as dependências do projeto:
-```
-npm install
-```
-
 Então é nescessário iniciar o servidor do Metro, responsável por conectar o dispositivo à aplicação:
-``` 
-npm run start 
-```
-
 Em sequência, precisamos iniciar a aplicação em sí, neste momento se você tiver um emulador instalado, o emulador será iniciado automagicamente, se não houver um emulador, será preciso conectar um aparelho android em "modo adb", caso nenhum aparelho seja encontrado, a aplicação não será iniciada:
 ```
+npm install
+npm run start 
 npm run android
 ```
 * aplicação não testada em aparelhos com ios.
 
+Gerando um Apk:
+```
+android/gradlew assembleRelease
+```
 ### Prints do projeto: 
 
 <table>
@@ -51,6 +57,7 @@ npm run android
     <tbody>
         <tr>
             <td>
+            <br>
 
 ![initial page](./prints/initial.jpeg)
             </td>
@@ -68,9 +75,7 @@ npm run android
 
 ### O que falta ser feito:
 
-- Implementar o cálculo em sí;
 - Corrigir falhas ao retornar para tela inicial, e ao mudar os status dentro da tela de cálculo, utilizando `useEffect`, para tratar a chamada dos componentes.
-- Refatorar o código para seguir melhor o conceito DRY;
 - Melhorar a interface, e a tela de splash.
 
 

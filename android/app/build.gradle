@@ -152,6 +152,13 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+
+        release {
+            storeFile file('my-upload-key.keystore')
+            storePassword 'eduardo11'
+            keyAlias 'tftcalc'
+            keyPassword 'eduardo11'
+        }
     }
     buildTypes {
         debug {

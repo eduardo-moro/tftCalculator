@@ -34,7 +34,6 @@ export default props => {
 
   [1, 2, 3, 8, 0, 4, 7, 6, 5].map((i, which) => {
     orderedButtons[which] = buttons[i];
-    console.log(orderedButtons[which]);
   });
 
   return (
@@ -55,6 +54,11 @@ export default props => {
             onPress={() => {
               if (item.key > 0) {
                 props.onClick(item.key);
+              }
+            }}
+            onLongPress={() => {
+              if (item.key > 0) {
+                props.onLongClick(item.key);
               }
             }}>
             <Text>{item.key !== 0 ? item.name : ''}</Text>

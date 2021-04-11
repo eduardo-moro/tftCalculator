@@ -1,13 +1,25 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Appbar} from 'react-native-paper';
 import {useColorScheme, View, StyleSheet} from 'react-native';
 import ButtonTable from '../../components/ButtonTable';
 import {SafeAreaView} from 'react-native-safe-area-context/src/SafeAreaView';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+function useForceUpdate() {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => ++value); // update the state to force render
+}
+
 const MyComponent = props => {
-  const [isLoading, setIsLoading] = useState(true);
   const isDarkMode = useColorScheme() === 'dark';
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [killed, setKilled] = useState([]);
+  const [active, setActive] = useState([]);
+  const [maxActive, setMax] = useState([]);
+
+  const forceUpdate = useForceUpdate();
+
   const styles = StyleSheet.create({
     container: {
       width: '100%',
@@ -32,13 +44,18 @@ const MyComponent = props => {
     },
   });
 
+  let _goBack = () => {
+    props.navigation.navigate({
+      name: 'Nicks',
+    });
+  };
+
   const [buttons, setButtons] = useState([]);
 
-  useEffect(() => {
-    const getNames = async () => {
-      let response = false;
+  const getNames = () => {
+    return async () => {
       try {
-        response = await AsyncStorage.getItem('buttons').then(data => {
+        await AsyncStorage.getItem('buttons').then(data => {
           setButtons(JSON.parse(data));
           setIsLoading(false);
         });
@@ -47,28 +64,83 @@ const MyComponent = props => {
         return false;
       }
     };
-
-    const set = getNames();
-  }, []);
-
-  let _goBack = () => {
-    props.navigation.navigate({
-      name: 'Nicks',
-    });
   };
 
-  const [open, setOpen] = useState([]);
+  const updateAll = key => {
+    let newButtons = buttons;
+    if (buttons[key].color !== 'darkseagreen') {
+      return false;
+    }
+
+    buttons.map(btn => {
+      if (key <= 3) {
+        if (
+          btn.key === key + 5 &&
+          btn.color === 'tomato' &&
+          !killed.includes(btn.key)
+        ) {
+          newButtons[btn.key].color = 'darkseagreen';
+        } else if (
+          btn.key === key + 5 &&
+          btn.color !== 'tomato' &&
+          !killed.includes(btn.key)
+        ) {
+          newButtons[btn.key].color = 'tomato';
+        }
+      } else {
+        if (
+          btn.key === key - 3 &&
+          btn.color === 'tomato' &&
+          !killed.includes(btn.key)
+        ) {
+          newButtons[btn.key].color = 'darkseagreen';
+        } else if (
+          btn.key === key - 3 &&
+          btn.color !== 'tomato' &&
+          !killed.includes(btn.key)
+        ) {
+          newButtons[btn.key].color = 'tomato';
+        }
+      }
+    });
+    setButtons(newButtons);
+    forceUpdate();
+  };
 
   const onButtonClick = childData => {
-    setIsLoading(false);
     let newButtons = buttons;
+
+    updateAll(childData);
+
+    if (undefined === newButtons[childData].color) {
+      newButtons[childData].color = '';
+    }
+
+    if (newButtons[childData].color === 'grey') {
+      return;
+    }
+
     if (newButtons[childData].color !== 'tomato') {
       newButtons[childData].color = 'tomato';
-    } else {
-      newButtons[childData].color = 'darkseagreen';
     }
+
     setButtons(newButtons);
+    forceUpdate();
   };
+
+  const killEnemy = childData => {
+    let newButtons = buttons;
+
+    killed.push(childData);
+    setKilled(killed);
+
+    newButtons[childData].color = 'grey';
+
+    setButtons(newButtons);
+    forceUpdate();
+  };
+
+  const [names] = useState(getNames());
 
   return (
     <SafeAreaView style={styles.container}>
@@ -78,7 +150,11 @@ const MyComponent = props => {
       </Appbar.Header>
       <View style={styles.row}>
         <View style={styles.buttonContainer}>
-          <ButtonTable onClick={onButtonClick} buttons={buttons} />
+          <ButtonTable
+            onClick={onButtonClick}
+            onLongClick={killEnemy}
+            buttons={buttons}
+          />
         </View>
       </View>
     </SafeAreaView>

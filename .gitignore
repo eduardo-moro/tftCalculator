@@ -35,6 +35,14 @@ project.xcworkspace
 /ReactAndroid/gradle/
 /ReactAndroid/gradlew
 /ReactAndroid/gradlew.bat
+/executionHistory/executionHistory.bin
+/executionHistory/executionHistory.lock
+/fileHashes/fileHashes.bin
+/fileHashes/fileHashes.lock
+/javaCompile/javaCompile.lock
+/javaCompile/taskHistory.bin
+/buildOutputCleanup.lock
+/checksums.lock
 
 # Buck
 .buckd
